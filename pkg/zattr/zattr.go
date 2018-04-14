@@ -33,7 +33,7 @@ func AttrChanger(g glob.Glob, mode string) FileHeaderMapper {
 	modeNumber, _ := strconv.ParseUint(mode, 0, 32)
 
 	return FileHeaderMatcher(g, func(f *zip.FileHeader) error {
-		newModeNumber := (uint32)(modeNumber | syscall.S_IFREG)
+		newModeNumber := (uint32)(modeNumber|syscall.S_IFREG) << 16
 		fmt.Printf("%s\t%#o -> %#o\n", f.Name, f.ExternalAttrs, newModeNumber)
 		f.ExternalAttrs = newModeNumber
 		return nil
